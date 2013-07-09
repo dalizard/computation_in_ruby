@@ -14,5 +14,14 @@ class While < Struct.new :condition, :body
   def reduce environment
     [If.new(condition, Sequence.new(body, self), DoNothing.new), environment]
   end
+
+  def evaluate environment
+    case condition.evaluate(environment)
+    when Boolean.new(true)
+      evaluate(body.evaluate(environment))
+    when Boolean.new(false)
+      environment
+    end
+  end
 end
 

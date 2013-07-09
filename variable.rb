@@ -14,5 +14,9 @@ class Variable < Struct.new :name
   def reduce environment
     environment[name]
   end
+
+  def evaluate environment
+    environment[name]
+  end
 end
 
