@@ -1,4 +1,8 @@
 class NFA < Struct.new :current_states, :accept_states, :rulebook
+  def current_states
+    rulebook.follow_free_moves super
+  end
+
   def accepting?
     (current_states & accept_states).any?
   end
