@@ -1,6 +1,6 @@
 module Pattern
   def bracket outer_precedence
-    if precendence < outer_precedence
+    if precedence < outer_precedence
       '(' + to_s + ')'
     else
       to_s
@@ -19,7 +19,7 @@ class Empty
     ''
   end
 
-  def precendence
+  def precedence
     3
   end
 end
@@ -31,7 +31,7 @@ class Literal < Struct.new :character
     character
   end
 
-  def precendence
+  def precedence
     3
   end
 end
@@ -40,10 +40,22 @@ class Concatenate < Struct.new :first, :second
   include Pattern
 
   def to_s
-    [first, second].map { |pattern| pattern.bracket precendence }.join '|'
+    [first, second].map { |pattern| pattern.bracket precedence }.join '|'
   end
 
-  def precendence
+  def precedence
+    0
+  end
+end
+
+class Choose < Struct.new(:first, :second)
+  include Pattern
+
+  def to_s
+    [first, second].map { |pattern| pattern.bracket precedence }.join '|'
+  end
+
+  def precedence
     0
   end
 end
@@ -52,10 +64,10 @@ class Repeat < Struct.new :pattern
   include Pattern
 
   def to_s
-    pattern.bracket(precendence) + '*'
+    pattern.bracket(precedence) + '*'
   end
 
-  def precendence
+  def precedence
     2
   end
 end
