@@ -1,6 +1,6 @@
 class NFADesign < Struct.new :start_state, :accept_states, :rulebook
-  def to_nfa
-    NFA.new Set[start_state], accept_states, rulebook
+  def to_nfa(current_states = Set[start_state])
+    NFA.new current_states, accept_states, rulebook
   end
 
   def accepts? string
